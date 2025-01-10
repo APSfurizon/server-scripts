@@ -10,6 +10,7 @@ WEBINT_BACKUP = False
 WP_BACKUP = False
 STUFF_BACKUP = False
 
+BACKUP_DIR_POSTGRES = "/home/postgres/backups/"
 BACKUP_DIR_PRETIX = "/home/pretix/backups/"
 BACKUP_DIR_WEBINT = "/home/webint/backups/"
 BACKUP_DIR_WP = "/home/worcopio/backups/"
@@ -17,12 +18,12 @@ BACKUP_DIR_STUFF = "/root/backups/"
 
 MAX_FILE_NO = 7
 
-COMMAND_PRETIX_POSTGRES = "pg_dump -F p pretix | gzip > %s" # Restore with psql -f %s
+COMMAND_POSTGRES = "sudo -u postgres pg_dumpall -F p | gzip > %s" # Restore with sudo -u postgres psql -f %s
 COMMAND_PRETIX_DATA = "tar -czf %s /var/pretix-data" # Restore with tar -xvf %s. To make .secret readable I used setfacl -m u:pretix:r /var/pretix-data/.secret
-COMMAND_WEBINT = "tar -czf %s /home/webint/furizon_webint" # Restore with tar -xvf %s
+COMMAND_WEBINT = "tar -czf %s /home/webint/fz-backend/data" # Restore with tar -xvf %s
 COMMAND_WP_MYSQL = "mysqldump -h 127.0.0.1 -P 5688 -u root --password=__PASSWORD__ --all-databases | gzip > %s" # Restore with zcat %s | mysql -h 127.0.0.1 -P 5688 -u root
 COMMAND_WP_DATA = "tar -czf %s /var/lib/docker/volumes/worcopio-docker_wordpress/_data" # Restore with tar -xvf %s
-COMMAND_STUFF = "tar -czf %s /etc/ /var/backups/ /var/log/ /var/mail/ /var/pretix-data/ /var/prometheus-data/ /var/spool/ /var/www/ /var/lib/grafana/ /var/lib/redis/" # Restore with tar -xvf %s
+COMMAND_STUFF = "tar -czf %s /etc/ /var/backups/ /var/log/ /var/mail/ /var/prometheus-data/ /var/spool/ /var/www/ /var/lib/grafana/ /var/lib/redis/" # Restore with tar -xvf %s
 
 
 def deleteOlder(path : str, prefix : str, postfix : str):
@@ -44,7 +45,6 @@ def runBackup(prefix : str, postfix : str, path : str, command : str):
 
 
 if(PRETIX_BACKUP):
-	runBackup("pretix_postres", "backup.sql.gz", join(BACKUP_DIR_PRETIX, "postgres"), COMMAND_PRETIX_POSTGRES)
 	runBackup("pretix_data", "backup.tar.gz", join(BACKUP_DIR_PRETIX, "data"), COMMAND_PRETIX_DATA)
 
 if(WEBINT_BACKUP):
@@ -63,4 +63,5 @@ if(WP_BACKUP):
 	runBackup("wp_wp", "backup.tar.gz", join(BACKUP_DIR_WP, "wp"), COMMAND_WP_DATA)
 
 if(STUFF_BACKUP):
+	runBackup("all_postres", "backup.sql.gz", BACKUP_DIR_POSTGRES, COMMAND_POSTGRES)
 	runBackup("stuff", "backup.tar.gz", BACKUP_DIR_STUFF, COMMAND_STUFF)
