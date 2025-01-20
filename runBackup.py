@@ -18,7 +18,7 @@ BACKUP_DIR_STUFF = "/root/backups/"
 
 MAX_FILE_NO = 7
 
-COMMAND_POSTGRES = "sudo -u postgres pg_dumpall -F p | gzip > %s" # Restore with sudo -u postgres psql -f %s
+COMMAND_POSTGRES = "sudo -u postgres pg_dumpall | gzip > %s" # Restore with sudo -u postgres psql -f %s
 COMMAND_PRETIX_DATA = "tar -czf %s /var/pretix-data" # Restore with tar -xvf %s. To make .secret readable I used setfacl -m u:pretix:r /var/pretix-data/.secret
 COMMAND_WEBINT = "tar -czf %s /home/webint/fz-backend/data" # Restore with tar -xvf %s
 COMMAND_WP_MYSQL = "mysqldump -h 127.0.0.1 -P 5688 -u root --password=__PASSWORD__ --all-databases | gzip > %s" # Restore with zcat %s | mysql -h 127.0.0.1 -P 5688 -u root
