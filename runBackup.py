@@ -23,7 +23,7 @@ COMMAND_PRETIX_DATA = "tar -czf %s /var/pretix-data" # Restore with tar -xvf %s.
 COMMAND_WEBINT = "tar -czf %s /home/webint/fz-backend/data" # Restore with tar -xvf %s
 COMMAND_WP_MYSQL = "mysqldump -h 127.0.0.1 -P 5688 -u root --password=__PASSWORD__ --all-databases | gzip > %s" # Restore with zcat %s | mysql -h 127.0.0.1 -P 5688 -u root
 COMMAND_WP_DATA = "tar -czf %s /var/lib/docker/volumes/worcopio-docker_wordpress/_data" # Restore with tar -xvf %s
-COMMAND_STUFF = "tar -czf %s /etc/ /var/backups/ /var/log/ /var/mail/ /var/prometheus-data/ /var/spool/ /var/www/ /var/lib/grafana/ /var/lib/redis/" # Restore with tar -xvf %s
+COMMAND_STUFF = "tar -czf %s /etc/ /var/backups/ /var/log/ /var/mail/ /var/prometheus-data/ /var/spool/ /var/www/ /var/lib/garage/ /var/lib/grafana/ /var/lib/redis/" # Restore with tar -xvf %s
 
 
 def deleteOlder(path : str, prefix : str, postfix : str):
